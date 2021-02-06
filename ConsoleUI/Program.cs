@@ -41,7 +41,6 @@ namespace ConsoleUI
             // carManager.Delete(new Car { Id=1002});
 
 
-
         }
     }
 }
