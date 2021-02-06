@@ -39,8 +39,6 @@ namespace ConsoleUI
             //carManager.Add(new Car{BrandId=5, ColorId=1, ModelYear=2015, DailyPrice=1430, Description="Uygun fiyata..." });
             // carManager.Update(new Car{ Id=1002,BrandId = 4, ColorId = 3, ModelYear = 2017, DailyPrice = 1450, Description = "Uygun fiyata..." });
             // carManager.Delete(new Car { Id=1002});
-
-
         }
     }
 }
