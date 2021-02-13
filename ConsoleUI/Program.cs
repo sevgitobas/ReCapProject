@@ -10,7 +10,15 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            CarTest();
+            //CarTest();
+            RentalAddTest();
+        }
+
+        private static void RentalAddTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result = rentalManager.Add(new Rental { CarId = 3, CustomerId = 2, RentDate = new DateTime(2020, 05, 14), ReturnDate = null });
+            Console.WriteLine(result.Message);
         }
 
         private static void CarTest()
