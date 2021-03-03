@@ -1,4 +1,4 @@
-﻿using Entities.Concrete;
+﻿using Core.Entities.Concrete;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,8 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(u => u.FirstName).MaximumLength(15);
             RuleFor(u => u.LastName).NotNull();
             RuleFor(u => u.LastName).MaximumLength(15);
-            RuleFor(u => u.Password).NotNull();
-            RuleFor(u => u.Password).MaximumLength(20);
+            RuleFor(u => u.PasswordHash).NotNull();
+            RuleFor(u => u.PasswordSalt).NotNull();
         }
 
         private bool MailCheck(string arg)
