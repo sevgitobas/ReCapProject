@@ -55,5 +55,7 @@ namespace Business.Constants
         public static string PasswordError = "Yanlış şifre";
         public static string UserRegistered = "Kullanıcı kaydedildi";
         public static string UserAlreadyExists = "Kullanıcı zaten mevcut";
+        internal static string CarImageLimitExceeded;
+        internal static string CarImagesAdded;
     }
 }

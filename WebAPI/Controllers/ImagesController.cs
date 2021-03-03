@@ -17,63 +17,84 @@ namespace WebAPI.Controllers
     public class ImagesController : ControllerBase
     {
         ICarImageService _carImageService;
-        IWebHostEnvironment _webHostEnvironment;
-        
-
-        public ImagesController(ICarImageService carImageService, IWebHostEnvironment webHostEnvironment)
+        public ImagesController(ICarImageService carImageService)
         {
-            _webHostEnvironment = webHostEnvironment;
             _carImageService = carImageService;
         }
 
-        [HttpGet("getall")]
-        public IActionResult GetAll()
-        {
-            var context = _carImageService.GetAll();
-            if (!context.Success)
-            {
-                return BadRequest(context);
-            }
-            return Ok(context);
-        }
+
 
         [HttpPost("add")]
-        public IActionResult Add(IFormFile imageFile, int carId)
+        public IActionResult Add([FromForm] CarImage carImage, [FromForm(Name = ("Image"))] IFormFile file)
         {
-            if (!FileOperations.CheckImageFile(imageFile))
-            {
-                return BadRequest(new { Message = "Resim dosya formatı hatalı!" });
-            }
-            string newImageName = Guid.NewGuid() + Path.GetExtension(imageFile.FileName);
-            var result = _carImageService.Add(new CarImage { CarId = carId, ImagePath = newImageName });
+            var result = _carImageService.Add(carImage, file);
             if (result.Success)
             {
-                FileOperations.WriteImageFile(imageFile, @"wwwroot\images", newImageName);
                 return Ok(result);
             }
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
-        public IActionResult Delete(CarImage carImage)
+        [HttpDelete("delete")]
+        public IActionResult Delete([FromForm(Name = ("Id"))] int id)
         {
-            var context = _carImageService.Delete(carImage);
-            if (context.Success)
+            var carImage = _carImageService.Get(id).Data;
+
+            var result = _carImageService.Delete(carImage);
+
+            if (result.Success)
             {
-                return Ok(context);
+                return Ok(result);
             }
-            return BadRequest(context);
+            return BadRequest(result);
         }
 
-        [HttpPost("update")]
-        public IActionResult Update(CarImage carImage)
+        [HttpPut("update")]
+        public IActionResult Update([FromForm(Name = ("Id"))] int Id, [FromForm(Name = ("Image"))] IFormFile file)
         {
-            var context = _carImageService.Update(carImage);
-            if (context.Success)
+            var carImage = _carImageService.Get(Id).Data;
+            var result = _carImageService.Update(carImage, file);
+            if (result.Success)
             {
-                return Ok(context);
+                return Ok(result);
             }
-            return BadRequest(context);
+            return BadRequest(result);
+        }
+
+
+        [HttpGet("getbyid")]
+        public IActionResult GetById(int id)
+        {
+            var result = _carImageService.Get(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+            var result = _carImageService.GetAll();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+
+        [HttpGet("getimagesbycarid")]
+        public IActionResult GetImagesById(int id)
+        {
+            var result = _carImageService.GetImagesByCarId(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }
